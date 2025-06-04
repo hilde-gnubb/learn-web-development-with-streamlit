@@ -1,7 +1,7 @@
 import streamlit as st
 from links import FROH, TRAURIG
-import numpy
 import random
+import pandas as pd
 state = st.session_state
 if "alle_namen" not in state:
    state["alle_namen"] = []
@@ -23,13 +23,12 @@ neuer_name = st.text_input("Bitte gebe einen Namen ein", value="")
 if neuer_name != "" and neuer_name not in state["alle_namen"]:
     state["alle_namen"].append(neuer_name)
 
-st.write(state["alle_namen"])
-users = st.multiselect("Personen", state["alle_namen"], state["alle_namen"])
-rolling_average = st.toggle("Rolling average")
 
-import streamlit as st
+state["alle_namen"] = st.multiselect("Personen", state["alle_namen"], state["alle_namen"])
 
-option = st.selectbox(
+
+
+gruppen_größe = st.selectbox(
     "Wie viele Personen sollen in einer Gruppe sein",
     (2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
 )
@@ -44,7 +43,28 @@ if personen_auswahl:
       person = random.choice(mögliche_personen)
       mögliche_personen.remove(person)
       nächste_gruppe.append(person)
-      if len(nächste_gruppe) == option:
+      if len(nächste_gruppe) == gruppen_größe:
          gruppen.append(nächste_gruppe)
          nächste_gruppe = []
-   st.write(gruppen)
+   
+   restpersonen = nächste_gruppe
+
+   if len(restpersonen) > 0:
+      gruppen_id = 0
+      for person in list(restpersonen):
+         gruppe = gruppen[gruppen_id]
+         gruppe.append(person)
+         nächste_gruppe.remove(person)
+         gruppen_id += 1
+         if gruppen_id >= len(gruppen):
+            gruppen_id = 0
+
+   max_personen = max(len(gruppe) for gruppe in gruppen) if gruppen else 0
+
+
+   df = pd.DataFrame(
+      gruppen, 
+      index=[f"Gruppe {i+1}" for i in range(len(gruppen))],
+      columns=[f"Person {i+1}" for i in range(max_personen)]
+   )
+   st.dataframe(df)
