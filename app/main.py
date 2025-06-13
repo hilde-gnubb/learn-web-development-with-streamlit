@@ -6,7 +6,6 @@ state = st.session_state
 if "alle_namen" not in state:
    state["alle_namen"] = []
 
-
 st.title("Hallo👋")
 
 st.markdown(
@@ -68,3 +67,4 @@ if personen_auswahl:
       columns=[f"Person {i+1}" for i in range(max_personen)]
    )
    st.dataframe(df)
+
