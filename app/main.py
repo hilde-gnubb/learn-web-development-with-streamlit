@@ -18,6 +18,16 @@ zeige_ballons = st.button("Ballons")
 if zeige_ballons:
    st.balloons()
 
+klasse = st.button("Klasse 8c")
+if klasse:
+   state["alle_namen"] = [
+      "Lutz", "Olivia", "Clementine", "Frederick", "Elias", "Finja", "Vincent", "Lukas", "Luisa", "Lara",
+      "Hilde", "Frida", "Arthur", "Konstantin", "Adrian", "Anton", "Amelie", "Mariia", "Hannes", "Eos", "Lena", "Thekla", "Benjamin", "Bela", 
+   ]
+else:
+   state["alle_namen"] = []  
+
+
 neuer_name = st.text_input("Bitte gebe einen Namen ein", value="")
 if neuer_name != "" and neuer_name not in state["alle_namen"]:
     state["alle_namen"].append(neuer_name)
@@ -26,7 +36,7 @@ if neuer_name != "" and neuer_name not in state["alle_namen"]:
 state["alle_namen"] = st.multiselect("Personen", state["alle_namen"], state["alle_namen"])
 
 Auswahl = st.selectbox(
-   "Möchtest du die anzahl an Personen oder gruppen bestimmen?"
+   "Möchtest du die anzahl an Personen oder Gruppen bestimmen?"
    ,("Personen", "Gruppen")
 )
 
