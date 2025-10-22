@@ -6,23 +6,21 @@ state = st.session_state
 if "alle_namen" not in state:
    state["alle_namen"] = []
 
-st.title("Hallo👋")
+st.title(":rainbow[Zufallsgenerator]")
 
-st.markdown(
-    """ 
-    **zu unserem :rainbow[Zufallsgenerator]!**
-    """
-)
+
 
 zeige_ballons = st.button("Ballons")
 if zeige_ballons:
    st.balloons()
 
-klasse = st.button("Klasse 8c")
-if klasse:
+state["klasse"] = st.toggle("Klasse 8c")
+
+
+if state["klasse"]:
    state["alle_namen"] = [
       "Lutz", "Olivia", "Clementine", "Frederick", "Elias", "Finja", "Vincent", "Lukas", "Luisa", "Lara",
-      "Hilde", "Frida", "Arthur", "Konstantin", "Adrian", "Anton", "Amelie", "Mariia", "Hannes", "Eos", "Lena", "Thekla", "Benjamin", "Bela", 
+      "Hilde", "Frida", "Arthur", "Konstantin", "Adrian", "Anton", "Amelie", "Mariia", "Hannes", "Eos", "Oda", "Thekla", "Klee", "Lena", "Benjamin" ,"Bela"
    ]
 else:
    state["alle_namen"] = []  
@@ -31,7 +29,6 @@ else:
 neuer_name = st.text_input("Bitte gebe einen Namen ein", value="")
 if neuer_name != "" and neuer_name not in state["alle_namen"]:
     state["alle_namen"].append(neuer_name)
-
 
 state["alle_namen"] = st.multiselect("Personen", state["alle_namen"], state["alle_namen"])
 
@@ -75,13 +72,14 @@ if Auswahl == "Personen":
 
                max_personen = max(len(gruppe) for gruppe in gruppen) if gruppen else 0
 
+      
 
       df = pd.DataFrame(
          gruppen, 
          index=[f"Gruppe {i+1}" for i in range(len(gruppen))],
-         columns=[f"Person {i+1}" for i in range(max_personen)]
+         columns=[f"Person {i+1}" for i in range(len(gruppen[0]))]
       )
-      st.dataframe(df)
+      st.dataframe(df.T)
 
 
 if Auswahl == "Gruppen":
@@ -125,6 +123,6 @@ if Auswahl == "Gruppen":
          index=[f"Gruppe {i+1}" for i in range(len(gruppen))],
          columns=[f"Person {i+1}" for i in range(max_personen)]
       )
-      st.dataframe(df)
+      st.dataframe(df.T)
 
 
