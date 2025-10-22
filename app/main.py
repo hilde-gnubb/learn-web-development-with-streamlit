@@ -8,7 +8,7 @@ if "alle_namen" not in state:
 
 st.title(":rainbow[Zufallsgenerator]")
 
-
+st.markdown("um Gruppen in der Klasse zu generieren")
 
 zeige_ballons = st.button("Ballons")
 if zeige_ballons:
