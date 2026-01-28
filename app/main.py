@@ -6,6 +6,13 @@ state = st.session_state
 if "alle_namen" not in state:
    state["alle_namen"] = []
 
+if "neuer_name" not in st.session_state:
+   state.neuer_name = ""
+
+def submit():
+   state.neuer_name = state.widget
+   state.widget = ""
+
 st.title(":rainbow[Zufallsgenerator]")
 
 st.markdown("um Gruppen in der Klasse zu generieren")
@@ -17,7 +24,7 @@ if zeige_ballons:
 state["meineklasse"] = st.toggle("Klasse 8c")
 state["klasse"] = st.toggle("Klassenbuch Nummern")
 
-# auswahl box für namen oder nummern ode eingeben
+# auswahl box für namen oder nummern oder eingeben
 
 if state["meineklasse"]:
    state["alle_namen"] = [
@@ -32,13 +39,18 @@ elif state["klasse"]:
       "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"
    ]
 
+neuer_name = st.text_input("Bitte gebe einen Namen ein", value="", on_change=submit, key="widget")
+
+if not state["meineklasse"] and not state["klasse"] and state["neuer_name"] == "":
+   state["alle_namen"] = []
 
 if state["meineklasse"] and state["klasse"]:
    state["alle_namen"] = []  
 
-neuer_name = st.text_input("Bitte gebe einen Namen ein", value="")
-if neuer_name != "" and neuer_name not in state["alle_namen"]:
-    state["alle_namen"].append(neuer_name)
+
+if state["neuer_name"] != "" and state["neuer_name"] not in state["alle_namen"]:
+   state["alle_namen"].append(state["neuer_name"])
+   state["neuer_name"] = ""
 
 state["alle_namen"] = st.multiselect("Personen", state["alle_namen"], state["alle_namen"])
 
