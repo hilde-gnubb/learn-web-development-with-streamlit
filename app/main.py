@@ -13,39 +13,41 @@ def submit():
    state.neuer_name = state.widget
    state.widget = ""
 
+def alle_Personen_leeren():
+   state["alle_namen"] = []
+
 st.title(":rainbow[Zufallsgenerator]")
 
-st.markdown("um Gruppen in der Klasse zu generieren")
+st.header("zum einteilen von Gruppen")
 
 zeige_ballons = st.button("Ballons")
 if zeige_ballons:
    st.balloons()
 
-state["meineklasse"] = st.toggle("Klasse 8c")
-state["klasse"] = st.toggle("Klassenbuch Nummern")
+personen_auswahl = st.selectbox(
+   "Welche Personen möchtest du einteilen?",
+   ("Eigene Namen", "Klassenbuch Nummern", "Klasse 8c"),
+   on_change = alle_Personen_leeren
+)
+
 
 # auswahl box für namen oder nummern oder eingeben
 
-if state["meineklasse"]:
+if personen_auswahl == "Klasse 8c":
    state["alle_namen"] = [
       "Lutz", "Olivia", "Clementine", "Frederick", "Elias", "Finja", "Vincent", "Lukas", "Luisa", "Lara",
       "Hilde", "Frida", "Arthur", "Konstantin", "Adrian", "Anton", "Amelie", "Mariia", "Hannes", "Eos", 
       "Oda", "Thekla", "Klee", "Lena", "Benjamin" ,"Bela"
    ]
-elif state["klasse"]:
+elif personen_auswahl == "Klassenbuch Nummern":
    state["alle_namen"] = [
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
       "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
       "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"
    ]
 
-neuer_name = st.text_input("Bitte gebe einen Namen ein", value="", on_change=submit, key="widget")
-
-if not state["meineklasse"] and not state["klasse"] and state["neuer_name"] == "":
-   state["alle_namen"] = []
-
-if state["meineklasse"] and state["klasse"]:
-   state["alle_namen"] = []  
+elif personen_auswahl == "Eigene Namen":
+   neuer_name = st.text_input("Bitte gebe einen Namen ein", value="", on_change=submit, key="widget")
 
 
 if state["neuer_name"] != "" and state["neuer_name"] not in state["alle_namen"]:
